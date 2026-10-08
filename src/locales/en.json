@@ -792,5 +792,9 @@
     "body": "Message body",
     "to": "To:",
     "cc": "Cc:"
+  },
+  "participants": {
+    "more": "+{{count}} more",
+    "showLess": "Show less"
   }
 }

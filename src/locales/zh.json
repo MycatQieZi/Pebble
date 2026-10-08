@@ -792,5 +792,9 @@
     "body": "邮件正文",
     "to": "收件人：",
     "cc": "抄送："
+  },
+  "participants": {
+    "more": "还有 {{count}} 人",
+    "showLess": "收起"
   }
 }

@@ -1515,6 +1515,73 @@ textarea:focus-visible {
   opacity: 0.42;
 }
 
+.message-participants {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 3px 0;
+}
+
+.participant-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.participant-label {
+  flex-shrink: 0;
+}
+
+.participant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 280px;
+  padding: 1px 3px 1px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg);
+}
+
+.participant-chip .participant-name {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+.participant-chip .contact-address-action {
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+}
+
+.participant-chip .contact-address-action:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--color-bg-hover);
+  color: var(--color-accent);
+}
+
+.participant-toggle {
+  padding: 0 2px;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.participant-toggle:hover {
+  text-decoration: underline;
+}
+
 .contact-primary-button,
 .contact-secondary-button,
 .contact-danger-button {
