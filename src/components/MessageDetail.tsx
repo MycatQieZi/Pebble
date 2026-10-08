@@ -18,9 +18,8 @@ import { useKanbanStore } from "@/stores/kanban.store";
 import { useToastStore } from "@/stores/toast.store";
 import { useUIStore } from "@/stores/ui.store";
 import SelectionActionPopover from "./SelectionActionPopover";
-import type { EmailAddress } from "@/lib/api";
 import ContactAddressAction from "./ContactAddressAction";
-import { uniqueContactParticipants } from "./contact-participants";
+import MessageParticipants from "./MessageParticipants";
 
 interface Props {
   messageId: string;
@@ -36,18 +35,6 @@ function formatFullDate(timestamp: number): string {
     hour: "2-digit",
     minute: "2-digit",
   });
-}
-
-function formatRecipient(address: EmailAddress): string {
-  const name = address.name?.trim();
-  const email = address.address.trim();
-  if (name && email) return `${name} <${email}>`;
-  if (email) return `<${email}>`;
-  return name ?? "";
-}
-
-function formatRecipients(addresses: EmailAddress[]): string {
-  return addresses.map(formatRecipient).filter(Boolean).join(", ");
 }
 
 export default function MessageDetail({ messageId, onBack, folderRole }: Props) {
@@ -229,13 +216,10 @@ export default function MessageDetail({ messageId, onBack, folderRole }: Props) 
     );
   }
 
-  const recipientLine = formatRecipients(message.to_list);
-  const ccLine = formatRecipients(message.cc_list);
-  const contactParticipants = uniqueContactParticipants(
-    { name: message.from_name, address: message.from_address },
-    message.to_list,
-    message.cc_list,
-  );
+  const contactParticipantsGroups = [
+    { label: t("messageDetail.to", "To:"), participants: message.to_list },
+    { label: t("messageDetail.cc", "Cc:"), participants: message.cc_list },
+  ];
 
   return (
     <div
@@ -341,39 +325,32 @@ export default function MessageDetail({ messageId, onBack, folderRole }: Props) 
           onMessageUpdate={setMessage}
         />
         <div style={{ paddingLeft: "32px" }}>
-          <div style={{ fontSize: "13px", color: "var(--color-text-primary)", marginBottom: "2px" }}>
+          <div
+            style={{
+              fontSize: "13px",
+              color: "var(--color-text-primary)",
+              marginBottom: "2px",
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "4px",
+            }}
+          >
             <span style={{ fontWeight: "500" }}>
               {message.from_name || message.from_address}
             </span>
             {message.from_name && (
-              <span style={{ color: "var(--color-text-secondary)", marginLeft: "6px" }}>
+              <span style={{ color: "var(--color-text-secondary)", marginLeft: "2px" }}>
                 &lt;{message.from_address}&gt;
               </span>
             )}
-            {recipientLine && (
-              <span style={{ color: "var(--color-text-secondary)", marginLeft: "6px", fontSize: "12px" }}>
-                {t("messageDetail.to", "To:")}&nbsp;{recipientLine}
-              </span>
-            )}
-            {ccLine && (
-              <span style={{ color: "var(--color-text-secondary)", marginLeft: "6px", fontSize: "12px" }}>
-                {t("messageDetail.cc", "Cc:")}&nbsp;{ccLine}
-              </span>
-            )}
+            <ContactAddressAction
+              accountId={message.account_id}
+              name={message.from_name}
+              address={message.from_address}
+            />
           </div>
-          <div
-            aria-label={t("contacts.participantActions", "Contact actions")}
-            style={{ display: "flex", alignItems: "center", gap: "3px", margin: "3px 0" }}
-          >
-            {contactParticipants.map((participant) => (
-              <ContactAddressAction
-                key={participant.address.toLowerCase()}
-                accountId={message.account_id}
-                name={participant.name}
-                address={participant.address}
-              />
-            ))}
-          </div>
+          <MessageParticipants accountId={message.account_id} groups={contactParticipantsGroups} />
           <div style={{ fontSize: "12px", color: "var(--color-text-secondary)" }}>
             {formatFullDate(message.date)}
           </div>
