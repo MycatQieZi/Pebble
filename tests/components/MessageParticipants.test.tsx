@@ -71,6 +71,20 @@ describe("MessageParticipants", () => {
     expect(screen.getAllByTestId("contact-address-action")).toHaveLength(5);
   });
 
+  it("caps the expanded list height and keeps the collapse toggle outside the scroll area", () => {
+    render(<MessageParticipants accountId="account-1" groups={groupsFor(makeParticipants(10, "to"))} />);
+
+    const groupsNode = document.querySelector(".message-participants-groups");
+    expect(groupsNode).not.toBeNull();
+    expect(groupsNode?.className).not.toContain("message-participants-groups--scroll");
+
+    fireEvent.click(screen.getByRole("button", { name: "+7 more" }));
+
+    expect(groupsNode?.className).toContain("message-participants-groups--scroll");
+    const showLess = screen.getByRole("button", { name: "Show less" });
+    expect(groupsNode?.contains(showLess)).toBe(false);
+  });
+
   it("does not collapse when participants fit the limit", () => {
     render(
       <MessageParticipants

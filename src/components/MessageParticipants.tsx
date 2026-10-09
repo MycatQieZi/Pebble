@@ -47,43 +47,59 @@ export default function MessageParticipants({ accountId, groups, collapsedLimit 
   const hiddenCount = totalCount - visibleCounts.reduce((sum, count) => sum + count, 0);
   const lastVisibleGroupIndex = visibleCounts.reduce((last, count, index) => (count > 0 ? index : last), -1);
 
+  const scrollable = expanded && collapsible;
+
   return (
     <div className="message-participants" aria-label={t("contacts.participantActions", "Contact actions")}>
-      {nonEmptyGroups.map((group, index) => {
-        const visible = group.participants.slice(0, visibleCounts[index]);
-        const hostsToggle = index === lastVisibleGroupIndex && collapsible;
-        return (
-          <div key={group.label} className="participant-row">
-            <span className="participant-label">{group.label}</span>
-            {visible.map((participant) => (
-              <span
-                key={participant.address.toLowerCase()}
-                className="participant-chip"
-                title={participantTitle(participant)}
-              >
-                <span className="participant-name">{participantLabel(participant)}</span>
-                <ContactAddressAction
-                  accountId={accountId}
-                  name={participant.name}
-                  address={participant.address}
-                />
-              </span>
-            ))}
-            {hostsToggle && (
-              <button
-                type="button"
-                className="participant-toggle"
-                aria-expanded={expanded}
-                onClick={() => setExpanded((value) => !value)}
-              >
-                {expanded
-                  ? t("participants.showLess", "Show less")
-                  : t("participants.more", { count: hiddenCount, defaultValue: "+{{count}} more" })}
-              </button>
-            )}
-          </div>
-        );
-      })}
+      <div
+        className={`message-participants-groups${scrollable ? " message-participants-groups--scroll" : ""}`}
+      >
+        {nonEmptyGroups.map((group, index) => {
+          const visible = group.participants.slice(0, visibleCounts[index]);
+          const hostsToggle = index === lastVisibleGroupIndex && collapsible && !expanded;
+          return (
+            <div key={group.label} className="participant-row">
+              <span className="participant-label">{group.label}</span>
+              {visible.map((participant) => (
+                <span
+                  key={participant.address.toLowerCase()}
+                  className="participant-chip"
+                  title={participantTitle(participant)}
+                >
+                  <span className="participant-name">{participantLabel(participant)}</span>
+                  <ContactAddressAction
+                    accountId={accountId}
+                    name={participant.name}
+                    address={participant.address}
+                  />
+                </span>
+              ))}
+              {hostsToggle && (
+                <button
+                  type="button"
+                  className="participant-toggle"
+                  aria-expanded={expanded}
+                  onClick={() => setExpanded(true)}
+                >
+                  {t("participants.more", { count: hiddenCount, defaultValue: "+{{count}} more" })}
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {scrollable && (
+        <div className="participant-row">
+          <button
+            type="button"
+            className="participant-toggle"
+            aria-expanded={expanded}
+            onClick={() => setExpanded(false)}
+          >
+            {t("participants.showLess", "Show less")}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

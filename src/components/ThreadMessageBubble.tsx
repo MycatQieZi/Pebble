@@ -67,10 +67,10 @@ export default function ThreadMessageBubble({ message, defaultExpanded = false }
         }}
       >
         {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        <span style={{ fontSize: "13px", fontWeight: 500, flex: 1 }}>
+        <span style={{ fontSize: "13px", fontWeight: "600", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {message.from_name || message.from_address}
         </span>
-        <span style={{ fontSize: "11px", color: "var(--color-text-secondary)" }}>
+        <span style={{ fontSize: "12px", color: "var(--color-text-secondary)", flexShrink: 0 }}>
           {formatFullDate(message.date)}
         </span>
       </button>
@@ -78,28 +78,33 @@ export default function ThreadMessageBubble({ message, defaultExpanded = false }
       {/* Body - only when expanded */}
       {expanded && (
         <div style={{ padding: "12px 14px", borderTop: "1px solid var(--color-border)" }}>
-          {/* Sender + participants */}
+          {/* Sender + participants header card */}
           <div
             style={{
-              fontSize: "12px",
-              color: "var(--color-text-secondary)",
+              backgroundColor: "var(--color-bg-hover)",
+              borderRadius: "8px",
+              padding: "8px 12px",
+              color: "var(--color-text-primary)",
               marginBottom: "8px",
             }}
           >
             <div
               style={{
+                fontSize: "13px",
+                marginBottom: "2px",
                 display: "flex",
                 alignItems: "center",
                 flexWrap: "wrap",
                 gap: "4px",
-                marginBottom: "3px",
               }}
             >
-              <span style={{ fontWeight: 500, color: "var(--color-text-primary)" }}>
+              <span style={{ fontWeight: "600" }}>
                 {message.from_name || message.from_address}
               </span>
               {message.from_name && (
-                <span>&lt;{message.from_address}&gt;</span>
+                <span style={{ fontSize: "12px", color: "var(--color-text-secondary)", marginLeft: "2px" }}>
+                  &lt;{message.from_address}&gt;
+                </span>
               )}
               <ContactAddressAction
                 accountId={message.account_id}
