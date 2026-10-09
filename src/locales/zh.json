@@ -369,7 +369,8 @@
     "syncNow": "立即同步",
     "stopSync": "停止同步",
     "keepRunningInBackground": "关闭时保持后台运行",
-    "exitOnClose": "关闭时退出应用"
+    "keepRunningBackgroundEnabled": "关闭时保持后台运行：已开启",
+    "keepRunningBackgroundDisabled": "关闭时保持后台运行：已关闭"
   },
   "attachments": {
     "title": "附件",

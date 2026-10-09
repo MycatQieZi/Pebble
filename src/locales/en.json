@@ -369,7 +369,8 @@
     "syncNow": "Sync now",
     "stopSync": "Stop sync",
     "keepRunningInBackground": "Keep running in background on close",
-    "exitOnClose": "Exit on close"
+    "keepRunningBackgroundEnabled": "Keep running in background on close: on",
+    "keepRunningBackgroundDisabled": "Keep running in background on close: off"
   },
   "attachments": {
     "title": "Attachments",
