@@ -257,7 +257,7 @@ export default function MessageDetail({ messageId, onBack, folderRole }: Props) 
           </button>
           <h2
             style={{
-              fontSize: "15px",
+              fontSize: "16px",
               fontWeight: "600",
               color: "var(--color-text-primary)",
               overflow: "hidden",
@@ -327,32 +327,47 @@ export default function MessageDetail({ messageId, onBack, folderRole }: Props) 
         <div style={{ paddingLeft: "32px" }}>
           <div
             style={{
-              fontSize: "13px",
+              backgroundColor: "var(--color-bg-hover)",
+              borderRadius: "8px",
+              padding: "8px 12px",
               color: "var(--color-text-primary)",
-              marginBottom: "2px",
-              display: "flex",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "4px",
             }}
           >
-            <span style={{ fontWeight: "500" }}>
-              {message.from_name || message.from_address}
-            </span>
-            {message.from_name && (
-              <span style={{ color: "var(--color-text-secondary)", marginLeft: "2px" }}>
-                &lt;{message.from_address}&gt;
+            <div
+              style={{
+                fontSize: "13px",
+                marginBottom: "2px",
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "4px",
+              }}
+            >
+              <span style={{ fontWeight: "600" }}>
+                {message.from_name || message.from_address}
               </span>
-            )}
-            <ContactAddressAction
-              accountId={message.account_id}
-              name={message.from_name}
-              address={message.from_address}
-            />
-          </div>
-          <MessageParticipants accountId={message.account_id} groups={contactParticipantsGroups} />
-          <div style={{ fontSize: "12px", color: "var(--color-text-secondary)" }}>
-            {formatFullDate(message.date)}
+              {message.from_name && (
+                <span style={{ fontSize: "12px", color: "var(--color-text-secondary)", marginLeft: "2px" }}>
+                  &lt;{message.from_address}&gt;
+                </span>
+              )}
+              <ContactAddressAction
+                accountId={message.account_id}
+                name={message.from_name}
+                address={message.from_address}
+              />
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "var(--color-text-secondary)",
+                  marginLeft: "auto",
+                  flexShrink: 0,
+                }}
+              >
+                {formatFullDate(message.date)}
+              </span>
+            </div>
+            <MessageParticipants accountId={message.account_id} groups={contactParticipantsGroups} />
           </div>
         </div>
       </div>

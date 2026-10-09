@@ -196,6 +196,30 @@ describe("MessageDetail selected-text context actions", () => {
     expect(screen.queryByText(/current@example\.com/)).toBeNull();
   });
 
+  it("renders the sender line as a semibold header card with a right-aligned date", () => {
+    render(<MessageDetail messageId="message-1" onBack={vi.fn()} />);
+
+    const heading = screen.getByRole("heading", { name: "Context actions" });
+
+    expect(heading.style.fontSize).toBe("16px");
+
+    const senderName = screen.getByText("Sender");
+
+    expect(senderName.style.fontWeight).toBe("600");
+
+    const senderRow = senderName.parentElement as HTMLElement;
+    const card = senderRow.parentElement as HTMLElement;
+
+    expect(senderRow.style.fontSize).toBe("13px");
+    expect(card.style.borderRadius).toBe("8px");
+    expect(card.style.padding).toBe("8px 12px");
+
+    const dateSpan = Array.from(senderRow.querySelectorAll("span"))
+      .find((node) => node.style.marginLeft === "auto");
+
+    expect(dateSpan?.textContent).toContain("2023");
+  });
+
   it("offers contact actions for the sender and each visible recipient", () => {
     render(<MessageDetail messageId="message-1" onBack={vi.fn()} />);
 
